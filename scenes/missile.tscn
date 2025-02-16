@@ -1,0 +1,95 @@
+[gd_scene load_steps=11 format=3 uid="uid://b0piaebs6bddn"]
+
+[ext_resource type="Script" path="res://scripts/missile.gd" id="1_s0ka1"]
+[ext_resource type="Texture2D" uid="uid://4c46c1hobujk" path="res://assets/missile.png" id="2_qrvo6"]
+[ext_resource type="AudioStream" uid="uid://nxhj0d3erprr" path="res://sfx/explosion.wav" id="3_5ydrq"]
+[ext_resource type="AudioStream" uid="uid://bvn17c51a48vn" path="res://sfx/thrust.wav" id="4_jlb4i"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_axhsv"]
+radius = 3.0
+height = 18.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_26jux"]
+radius = 6.0
+height = 24.0
+
+[sub_resource type="Gradient" id="Gradient_5nl5e"]
+colors = PackedColorArray(0.842455, 0, 0.0223268, 1, 0.797481, 0.49455, 5.77569e-07, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hn8vi"]
+
+[sub_resource type="Curve" id="Curve_j4hdc"]
+max_value = 2.0
+_data = [Vector2(0, 0), 0.0, -0.753106, 0, 0, Vector2(0.442953, 1.56081), 0.271955, 0.271955, 0, 0, Vector2(1, 0), -1.86907, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_r0u65"]
+colors = PackedColorArray(0.81, 0.1539, 0.1539, 1, 0.96, 0.592, 0, 1)
+
+[node name="Missile" type="RigidBody2D"]
+collision_layer = 2
+script = ExtResource("1_s0ka1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_axhsv")
+
+[node name="Area2D" type="Area2D" parent="."]
+rotation = 1.5708
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_26jux")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_qrvo6")
+
+[node name="ExplosionParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 200
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 0.1
+lifetime_randomness = 0.5
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 201.26
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_5nl5e")
+
+[node name="ThrustParticles" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_hn8vi")
+position = Vector2(-9, 0)
+rotation = 1.5708
+amount = 150
+lifetime = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(2, 1)
+direction = Vector2(0, 1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 300.0
+radial_accel_min = -20.0
+radial_accel_max = -20.0
+angle_min = -126.8
+scale_amount_curve = SubResource("Curve_j4hdc")
+color_ramp = SubResource("Gradient_r0u65")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ExplosionSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_5ydrq")
+volume_db = -6.303
+pitch_scale = 1.5
+
+[node name="ThrustSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_jlb4i")
+volume_db = -5.042
+pitch_scale = 1.5
+autoplay = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

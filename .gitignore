@@ -1,0 +1,17 @@
+# Файлы Godot, которые не нужно коммитить
+.import/
+.godot/
+.mono/
+.vs/
+.idea/
+builds/
+*.tmp
+*.log
+*.cfg
+*.db
+*.import
+
+# Кешированные файлы и временные данные
+.godot/   
+.mono/
+export_presets.cfg  

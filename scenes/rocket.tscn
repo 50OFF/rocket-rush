@@ -1,0 +1,104 @@
+[gd_scene load_steps=13 format=3 uid="uid://rlkf7yqnjjbk"]
+
+[ext_resource type="Script" path="res://scripts/rocket.gd" id="1_hlc6p"]
+[ext_resource type="Texture2D" uid="uid://rc7by1ceqjwx" path="res://assets/rocket.png" id="2_u8c2x"]
+[ext_resource type="PackedScene" uid="uid://bxnfvq4gxtg02" path="res://scenes/hud.tscn" id="3_8v7y4"]
+[ext_resource type="Texture2D" uid="uid://6fjoqeosrckb" path="res://assets/arrow.png" id="4_t1dpl"]
+[ext_resource type="AudioStream" uid="uid://nxhj0d3erprr" path="res://sfx/explosion.wav" id="5_6s65a"]
+[ext_resource type="AudioStream" uid="uid://bvn17c51a48vn" path="res://sfx/thrust.wav" id="6_nl3uq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ixk1e"]
+radius = 9.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b1nj3"]
+radius = 7.0
+height = 26.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_12k8g"]
+
+[sub_resource type="Curve" id="Curve_ffvdo"]
+max_value = 2.0
+_data = [Vector2(0, 0), 0.0, -0.753106, 0, 0, Vector2(0.442953, 1.56081), 0.271955, 0.271955, 0, 0, Vector2(1, 0), -1.86907, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_0mkol"]
+colors = PackedColorArray(0.81, 0.1539, 0.1539, 1, 0.96, 0.592, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_3qc5r"]
+colors = PackedColorArray(0.643137, 0, 0, 1, 0.829696, 0.331883, 5.77569e-07, 1)
+metadata/_snap_count = 3
+
+[node name="RigidBody2D" type="RigidBody2D"]
+z_index = 50
+mass = 0.526
+gravity_scale = 0.0
+linear_damp = 1.0
+script = ExtResource("1_hlc6p")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_speed = 190.0
+
+[node name="Hud" parent="Camera2D" instance=ExtResource("3_8v7y4")]
+offset_left = -320.0
+offset_top = -240.0
+offset_right = -320.0
+offset_bottom = -240.0
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CapsuleShape2D_ixk1e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_b1nj3")
+
+[node name="ThrustParticles" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_12k8g")
+position = Vector2(0, 12)
+emitting = false
+amount = 150
+lifetime = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(4.375, 1)
+direction = Vector2(0, 1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 300.0
+radial_accel_min = -20.0
+radial_accel_max = -20.0
+angle_min = -126.8
+scale_amount_curve = SubResource("Curve_ffvdo")
+color_ramp = SubResource("Gradient_0mkol")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-5.96046e-07, 1.19209e-06)
+scale = Vector2(1.66667, 1.66667)
+texture = ExtResource("2_u8c2x")
+
+[node name="ExplosionParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 200
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+lifetime_randomness = 0.92
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 477.98
+angle_max = 190.2
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_3qc5r")
+hue_variation_min = -0.48
+hue_variation_max = 0.47
+
+[node name="Arrow" type="Sprite2D" parent="."]
+z_index = 100
+texture = ExtResource("4_t1dpl")
+offset = Vector2(0, -20)
+
+[node name="ExplosionSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_6s65a")
+
+[node name="ThrustSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_nl3uq")

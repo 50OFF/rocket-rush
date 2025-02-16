@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5h3hm6ov0xpe"]
+
+[ext_resource type="Script" path="res://scripts/star.gd" id="1_m1opj"]
+[ext_resource type="Texture2D" uid="uid://cdh0ybylqwglj" path="res://assets/star.png" id="1_vwlbk"]
+[ext_resource type="AudioStream" uid="uid://qqqpm688ylaf" path="res://sfx/collect.wav" id="3_rni5s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8bfo0"]
+radius = 9.0
+
+[sub_resource type="Gradient" id="Gradient_ov7of"]
+colors = PackedColorArray(1, 0.866667, 0, 1, 0.66, 0.57288, 0.00659999, 1)
+
+[node name="Star" type="Node2D"]
+script = ExtResource("1_m1opj")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_8bfo0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_vwlbk")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 200
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 0.1
+lifetime_randomness = 0.5
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 201.26
+color_ramp = SubResource("Gradient_ov7of")
+
+[node name="CollectSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_rni5s")
+volume_db = -9.454
+pitch_scale = 0.79
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

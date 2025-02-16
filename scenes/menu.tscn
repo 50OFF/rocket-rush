@@ -1,0 +1,95 @@
+[gd_scene load_steps=11 format=3 uid="uid://bxfacapqf62rm"]
+
+[ext_resource type="Script" path="res://scripts/menu.gd" id="1_duls6"]
+[ext_resource type="Texture2D" uid="uid://rc7by1ceqjwx" path="res://assets/rocket.png" id="1_yiyuq"]
+[ext_resource type="AudioStream" uid="uid://bvn17c51a48vn" path="res://sfx/thrust.wav" id="3_ox46u"]
+[ext_resource type="AudioStream" uid="uid://dxcbgr47u8ced" path="res://sfx/music.wav" id="4_3mpe0"]
+
+[sub_resource type="Gradient" id="Gradient_fx2in"]
+colors = PackedColorArray(0.012, 0.0138, 0.12, 1, 0.002, 0.0203667, 0.04, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dvx3t"]
+noise_type = 3
+seed = 2
+frequency = 0.3418
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hp2hs"]
+width = 4096
+height = 4096
+color_ramp = SubResource("Gradient_fx2in")
+noise = SubResource("FastNoiseLite_dvx3t")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yyvx3"]
+
+[sub_resource type="Curve" id="Curve_o50s2"]
+min_value = 3.0
+max_value = 5.0
+_data = [Vector2(0, 3), 0.0, -0.753106, 0, 0, Vector2(0.436242, 5), 0.271955, 0.271955, 0, 0, Vector2(0.993289, 3), -1.86907, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_f6fkv"]
+colors = PackedColorArray(0.81, 0.1539, 0.1539, 1, 0.96, 0.592, 0, 1)
+
+[node name="Node" type="Node"]
+script = ExtResource("1_duls6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 0)
+rotation = -1.57079
+scale = Vector2(0.670379, 0.666824)
+texture = SubResource("NoiseTexture2D_hp2hs")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(205.726, 281.726)
+rotation = 0.328996
+scale = Vector2(10.9029, 10.9029)
+texture = ExtResource("1_yiyuq")
+
+[node name="PlayButton" type="Button" parent="."]
+offset_left = 416.0
+offset_top = 244.0
+offset_right = 625.0
+offset_bottom = 389.0
+scale = Vector2(0.439003, 0.439003)
+theme_override_font_sizes/font_size = 100
+text = "Start"
+flat = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = 142.0
+offset_top = 78.0
+offset_right = 1712.0
+offset_bottom = 351.0
+scale = Vector2(0.244281, 0.244281)
+theme_override_font_sizes/font_size = 200
+text = "ROCKET RUSH"
+horizontal_alignment = 1
+
+[node name="ThrustParticles" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_yyvx3")
+position = Vector2(180, 355)
+rotation = 0.327728
+amount = 150
+lifetime = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(30.03, 1)
+direction = Vector2(0, 1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 991.82
+radial_accel_min = -20.0
+radial_accel_max = -20.0
+angle_min = -126.8
+scale_amount_curve = SubResource("Curve_o50s2")
+color_ramp = SubResource("Gradient_f6fkv")
+
+[node name="ThrustSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ox46u")
+autoplay = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_3mpe0")
+volume_db = -0.631
+autoplay = true
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
