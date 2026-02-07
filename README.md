@@ -8,9 +8,13 @@
 
 ## 🕹️ Управление
 
-* **W** — двигаться вперёд  
-* **A** — поворот влево  
-* **D** — поворот вправо  
+* **W** — двигаться вперёд
+* **A** — поворот влево
+* **D** — поворот вправо
+
+## 👾 Как поиграть
+
+🔗 Игра доступна на itch.io: https://reversse.itch.io/rocket-rush
 
 ## 📷 Скриншоты
 
@@ -18,6 +22,4 @@
 ![Rocket Rush Screenshot 2](Screenshot2.png)  
 ![Rocket Rush Screenshot 3](Screenshot3.png)
 
-## 🚀 Как поиграть
 
-🔗 Игра доступна на itch.io: https://reversse.itch.io/rocket-rush
